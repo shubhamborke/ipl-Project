@@ -38,3 +38,19 @@ const matchWonPerTeam = function wonPerTeam(result) {
 }
 
 module.exports = matchWonPerTeam;
+
+const extraRunsIn2016 = function extraRuns(result) {
+    let extraRun = {};
+    for (let i = 0; i < result.length; i++) {
+        if (result[i].season === "2016") {
+            if (extraRun[result[i].winner]) {
+                extraRun[result[i].winner] += Number(result[i].win_by_runs);
+            } else {
+                extraRun[result[i].winner] = Number(result[i].win_by_runs);
+            }
+        }
+    }
+    return extraRun;
+}
+
+module.exports = extraRunsIn2016;
