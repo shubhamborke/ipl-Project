@@ -637,4 +637,4 @@ const matches = [
 {"id":"636","season":"2016","city":"Bangalore","date":"2016-05-29","team1":"Sunrisers Hyderabad","team2":"Royal Challengers Bangalore","toss_winner":"Sunrisers Hyderabad","toss_decision":"bat","result":"normal","dl_applied":"0","winner":"Sunrisers Hyderabad","win_by_runs":"8","win_by_wickets":"0","player_of_match":"BCJ Cutting","venue":"M Chinnaswamy Stadium","umpire1":"HDPK Dharmasena","umpire2":"BNJ Oxenford","umpire3":""}
 ]
 
-module.exports = matches;
+export { matches }

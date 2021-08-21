@@ -1,4 +1,4 @@
-const matches = require("./csv-matches");
+import { matches } from "./csv-matches.js";
 
 
 const matchesPlayedPerYear = function matchesPlayed(result) {
@@ -13,7 +13,7 @@ const matchesPlayedPerYear = function matchesPlayed(result) {
     return matchesPerYear;
 }
 
-module.exports = matchesPlayedPerYear;
+export { matchesPlayedPerYear }
 
 const matchWonPerTeam = function wonPerTeam(result) {
     let matchWon = {};
@@ -37,7 +37,7 @@ const matchWonPerTeam = function wonPerTeam(result) {
     return matchWon;
 }
 
-module.exports = matchWonPerTeam;
+export { matchWonPerTeam }
 
 const extraRunsIn2016 = function extraRuns(result) {
     let extraRun = {};
@@ -53,4 +53,4 @@ const extraRunsIn2016 = function extraRuns(result) {
     return extraRun;
 }
 
-module.exports = extraRunsIn2016;
+export { extraRunsIn2016 }
