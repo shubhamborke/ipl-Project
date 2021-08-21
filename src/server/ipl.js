@@ -1,4 +1,4 @@
-import { matches } from "./csv-json.js";
+const matches = require("./csv-matches");
 
 
 const matchesPlayedPerYear = function matchesPlayed(result) {
@@ -13,8 +13,7 @@ const matchesPlayedPerYear = function matchesPlayed(result) {
     return matchesPerYear;
 }
 
-console.log(matchesPlayedPerYear(matches));
-
+module.exports = matchesPlayedPerYear;
 
 const matchWonPerTeam = function wonPerTeam(result) {
     let matchWon = {};
@@ -23,19 +22,19 @@ const matchWonPerTeam = function wonPerTeam(result) {
             matchWon[result[i].winner] = {};
         }
     }
-    for(let i = 0 ; i < result.length; i++){
-        for(let key in matchWon){
-            if(key === result[i].winner){
-                if(matchWon[result[i].winner][result[i].season]){
+    for (let i = 0; i < result.length; i++) {
+        for (let key in matchWon) {
+            if (key === result[i].winner) {
+                if (matchWon[result[i].winner][result[i].season]) {
                     matchWon[result[i].winner][result[i].season] += 1;
-                }else{
+                } else {
                     matchWon[result[i].winner][result[i].season] = 1;
                 }
             }
         }
-            
+
     }
     return matchWon;
 }
 
-console.log(matchWonPerTeam(matches))
+module.exports = matchWonPerTeam;
