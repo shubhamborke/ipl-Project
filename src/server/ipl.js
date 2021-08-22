@@ -1,5 +1,5 @@
-import { matches } from "./csv-matches.js";
-
+     
+     // matches played per year
 
 const matchesPlayedPerYear = function matchesPlayed(result) {
     let matchesPerYear = {};
@@ -14,6 +14,9 @@ const matchesPlayedPerYear = function matchesPlayed(result) {
 }
 
 export { matchesPlayedPerYear }
+
+
+        // matches played by team per year
 
 const matchWonPerTeam = function wonPerTeam(result) {
     let matchWon = {};
@@ -39,18 +42,23 @@ const matchWonPerTeam = function wonPerTeam(result) {
 
 export { matchWonPerTeam }
 
+
+        // extra runs conceded by team in 2016
+
 const extraRunsIn2016 = function extraRuns(result) {
     let extraRun = {};
     for (let i = 0; i < result.length; i++) {
-        if (result[i].season === "2016") {
-            if (extraRun[result[i].winner]) {
-                extraRun[result[i].winner] += Number(result[i].win_by_runs);
-            } else {
-                extraRun[result[i].winner] = Number(result[i].win_by_runs);
+        if (result[i].match_id >= 577) {
+            if(extraRun[result[i].bowling_team]){
+                extraRun[result[i].bowling_team] += Number(result[i].extra_runs);
+            }else{
+                extraRun[result[i].bowling_team] = Number(result[i].extra_runs);
             }
         }
     }
     return extraRun;
 }
 
+
 export { extraRunsIn2016 }
+
