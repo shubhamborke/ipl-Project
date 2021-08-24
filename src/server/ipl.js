@@ -1,5 +1,5 @@
-     
-     // matches played per year
+import { deliveries } from "./deliveriesData.js";
+// matches played per year
 
 const matchesPlayedPerYear = function matchesPlayed(result) {
     let matchesPerYear = {};
@@ -16,7 +16,7 @@ const matchesPlayedPerYear = function matchesPlayed(result) {
 export { matchesPlayedPerYear }
 
 
-        // matches played by team per year
+// matches played by team per year
 
 const matchWonPerTeam = function wonPerTeam(result) {
     let matchWon = {};
@@ -43,15 +43,15 @@ const matchWonPerTeam = function wonPerTeam(result) {
 export { matchWonPerTeam }
 
 
-        // extra runs conceded by team in 2016
+// extra runs conceded by team in 2016
 
 const extraRunsIn2016 = function extraRuns(result) {
     let extraRun = {};
     for (let i = 0; i < result.length; i++) {
         if (result[i].match_id >= 577) {
-            if(extraRun[result[i].bowling_team]){
+            if (extraRun[result[i].bowling_team]) {
                 extraRun[result[i].bowling_team] += Number(result[i].extra_runs);
-            }else{
+            } else {
                 extraRun[result[i].bowling_team] = Number(result[i].extra_runs);
             }
         }
@@ -62,3 +62,51 @@ const extraRunsIn2016 = function extraRuns(result) {
 
 export { extraRunsIn2016 }
 
+
+// Economical top 10 bowler
+
+const topEconomicBowler = function economicBowlers(result) {
+    let totalOver = {};
+    let totalRuns = {};
+    let economic = {};
+    let economyPlayers = {};
+    for (let i = 0; i < result.length; i++) {
+        if (result[i].match_id >= 518 && result[i].match_id <= 576) {
+            if (totalRuns[result[i].bowler]) {
+                totalRuns[result[i].bowler] += Number(result[i].batsman_runs)
+            } else {
+                totalRuns[result[i].bowler] = Number(result[i].batsman_runs)
+            }
+        }
+        if (result[i].match_id >= 518 && result[i].match_id <= 576) {
+            if (totalOver[result[i].bowler]) {
+                totalOver[result[i].bowler] += 1;
+            } else {
+                totalOver[result[i].bowler] = 1;
+            }
+        }
+    }
+    for (let bowler in totalOver) {
+        totalOver[bowler] /= 6;
+    }
+    
+    for (let key in totalRuns) {
+        economic[key] = totalRuns[key] / totalOver[key];
+    }
+    let economyArr = [];
+    for(let key in economic){
+        economyArr.push(economic[key])
+    }
+    economyArr.sort((a,b)=>a-b);
+    economyArr = economyArr.slice(0,10)
+    for(let i = 0 ; i < economyArr.length; i++){
+        for(let key in economic){
+            if(economyArr[i] === economic[key]){
+                economyPlayers[key] = economyArr[i];
+            }
+        }
+    }
+    return economyPlayers
+}
+
+export { topEconomicBowler }
