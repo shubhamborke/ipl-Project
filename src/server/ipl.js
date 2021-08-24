@@ -65,6 +65,7 @@ export { extraRunsIn2016 }
 
 // Economical top 10 bowler
 
+
 const topEconomicBowler = function economicBowlers(result) {
     let totalOver = {};
     let totalRuns = {};
@@ -73,9 +74,9 @@ const topEconomicBowler = function economicBowlers(result) {
     for (let i = 0; i < result.length; i++) {
         if (result[i].match_id >= 518 && result[i].match_id <= 576) {
             if (totalRuns[result[i].bowler]) {
-                totalRuns[result[i].bowler] += Number(result[i].batsman_runs)
+                totalRuns[result[i].bowler] += Number(result[i].wide_runs)+Number(result[i].bye_runs)+Number(result[i].legbye_runs)+Number(result[i].noball_runs)+Number(result[i].penalty_runs)+Number(result[i].wide_runs)+Number(result[i].batsman_runs)+Number(result[i].extra_runs)
             } else {
-                totalRuns[result[i].bowler] = Number(result[i].batsman_runs)
+                totalRuns[result[i].bowler] = Number(result[i].wide_runs)+Number(result[i].bye_runs)+Number(result[i].legbye_runs)+Number(result[i].noball_runs)+Number(result[i].penalty_runs)+Number(result[i].wide_runs)+Number(result[i].batsman_runs)+Number(result[i].extra_runs)
             }
         }
         if (result[i].match_id >= 518 && result[i].match_id <= 576) {
