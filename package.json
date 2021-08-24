@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "hi": "node hello.js",
-    "csvjson": "node csvToJson.js"
+    "csvjson": "node src/server/index.js"
   },
   "author": "",
   "type": "module",
