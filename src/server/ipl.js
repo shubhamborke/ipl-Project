@@ -1,4 +1,4 @@
-import { matches } from "./matchesData.js";
+
 // matches played per year
 
 const matchesPlayedPerYear = function matchesPlayed(result) {
@@ -26,5 +26,19 @@ const matchWonPerTeam = function wonPerTeam(result) {
 
 
 export { matchWonPerTeam }
+
+
+// extra runs conceded by team in 2016
+
+const extraRunsIn2016 = function extraRuns(result) {
+    let extraRun = {};
+    result.filter(matche => matche.match_id >= 577).map(bowl => extraRun[bowl.bowling_team] ? extraRun[bowl.bowling_team] += Number(bowl.extra_runs) : extraRun[bowl.bowling_team] = Number(bowl.extra_runs))
+   
+    return extraRun;
+}
+
+
+export { extraRunsIn2016 }
+
 
 
