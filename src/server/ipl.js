@@ -84,4 +84,36 @@ const tossAndMatchWon = function tossAndMachesWinner(result) {
 export { tossAndMatchWon }
 
 
+  //  Player awarded most per season
 
+  const mostMatchAwards = function matchAwards(result){
+    let seasons = {}
+    let mostMatch = {};
+    let awardedPlay = {};
+    result.map(match => seasons[match.season] = {})
+    result.map(match => mostMatch[match.season] = {})
+    result.map(player => seasons[player.season][player.player_of_match] = 0)
+    result.map(player => seasons[player.season][player.player_of_match] += 1);
+    let mostAwards = [];
+    for(let key in seasons){
+      let las = [];
+      for(let keys in seasons[key]){
+        las.push(seasons[key][keys])
+      }
+      las = las.sort((a,b) => b-a)[0];
+      mostAwards.push(las);
+    }
+    let index = 0;
+    for(let key in seasons){
+      index++;
+      for(let keys in seasons[key]){
+        if(seasons[key][keys] === mostAwards[index-1]){
+          awardedPlay[key] = keys;
+        }
+      }
+    }
+  
+return awardedPlay;
+}
+
+export { mostMatchAwards }
