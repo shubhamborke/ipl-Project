@@ -5,7 +5,6 @@ import { matchWonPerTeam } from './ipl.js';
 import { extraRunsIn2016 } from './ipl.js';
 import { topEconomicBowler } from './ipl.js';
 import { tossAndMatchWon } from './ipl.js';
-import { mostMatchAwards } from './ipl.js';
 import fs from 'fs';
 
 
@@ -14,7 +13,7 @@ const matchesWonByTeam = matchWonPerTeam(matches);
 const extraRun = extraRunsIn2016(deliveries);
 const top10EconomiBowler = topEconomicBowler(deliveries);
 const tossAndMachesWonPerTeam = tossAndMatchWon(matches);
-const mostMatchAwards = mostMatchAwards()
+const mostMatch = mostMatchAwards(matches);
 
 
 
@@ -51,6 +50,14 @@ fs.writeFile('src/public/output/top10EconomiBowler.json', JSON.stringify(top10Ec
 });
 
 fs.writeFile('src/public/output/tossAndMachesWinner.json', JSON.stringify(tossAndMachesWonPerTeam,null,2), 'utf8', (err) =>{
+  if(err){
+      console.log(err);
+  }else{
+      console.log("written successful");
+  }
+});
+
+fs.writeFile('src/public/output/mostMatchAward.json', JSON.stringify(mostMatch,null,2), 'utf8', (err) =>{
   if(err){
       console.log(err);
   }else{
