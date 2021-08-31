@@ -198,3 +198,36 @@ const strikeRatePerSeason = function strikeRate(deliverydata, matchdata) {
 
 
 export { strikeRatePerSeason }
+
+  // Player dismissed by another player
+
+  const dismissalPlayer = function dismissedPlayer(result) {
+      let dismissPlayer = {};
+      let player = [];
+      let maxCount = {};
+      result.map(dismiss => dismiss.player_dismissed !== "" ? maxCount[dismiss.player_dismissed] = {} : null)
+      result.map(dismiss => dismiss.player_dismissed !== "" ? dismissPlayer[dismiss.player_dismissed] = {} : null)
+      for(let key in dismissPlayer){
+        result.map(dismiss => dismiss.player_dismissed === key ? dismissPlayer[key][dismiss.bowler] ? dismissPlayer[key][dismiss.bowler] += 1 : dismissPlayer[key][dismiss.bowler] = 1 : null);
+      }
+      for(let key in dismissPlayer){
+        let arr = [];
+        for(let keys in dismissPlayer[key]){
+          arr.push(dismissPlayer[key][keys])
+        }
+        player.push(Math.max(...arr))
+      }
+      let index = 0;
+        for(let key in dismissPlayer){
+          for(let keys in dismissPlayer[key]){
+            if(dismissPlayer[key][keys] === player[index]){
+              maxCount[key][keys] = player[index];
+              break;
+            }
+          }
+          index++;
+        }
+     return maxCount
+    }
+
+  export { dismissalPlayer }
