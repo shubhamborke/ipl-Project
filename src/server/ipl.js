@@ -160,74 +160,123 @@ const strikeRatePerSeason = function strikeRate(deliverydata, matchdata) {
   let batsmanRun = {};
   let bowlPlayed = {};
   let strikeRate = {};
-  matchdata.map(season => batsmanRun[season.season] = {});
-  matchdata.map(season => bowlPlayed[season.season] = {});
-  let countSeason = [];
+  let copyOfBatsman = {};
+  matchdata.map((season) => (batsmanRun[season.season] = {}));
+  matchdata.map((season) => (bowlPlayed[season.season] = {}));
+  
+  
   let index = 0;
-  matchdata.push({season: 100000})
-  for(let i = 1; i < matchdata.length; i++){
-    if(matchdata[i].season !== matchdata[i-1].season){
-      countSeason.push([matchdata[index].id, matchdata[i-1].id]);
+  matchdata.push({ season: 100000 });
+  for (let i = 1; i < matchdata.length; i++) {
+    if (matchdata[i].season !== matchdata[i - 1].season) {
+      copyOfBatsman[matchdata[i-1].season] = [matchdata[index].id, matchdata[i - 1].id];
       index = i;
     }
   }
   matchdata.pop();
-  index = 0;
-  let keys = Object.keys(batsmanRun)
-  countSeason.map(loop => {
-    deliverydata.map(elem => {
-      if(elem.match_id >= loop[0] && elem.match_id <= loop[1]){
-         if(batsmanRun[keys[index]][elem.batsman]){
-            batsmanRun[keys[index]][elem.batsman] += Number(elem.batsman_runs)
-            bowlPlayed[keys[index]][elem.batsman] += 1;
-          }else{
-            batsmanRun[keys[index]][elem.batsman] = Number(elem.batsman_runs)
-            bowlPlayed[keys[index]][elem.batsman] = 1;
-          }
+  let countSeason = Object.values(copyOfBatsman);
+  let keys = Object.keys(copyOfBatsman);
+  countSeason.map((loop, index) => {
+    deliverydata.map((elem) => {
+      if (elem.match_id >= Number(loop[0]) && elem.match_id <= Number(loop[1])) {
+        if (batsmanRun[keys[index]][elem.batsman]) {
+          batsmanRun[keys[index]][elem.batsman] += Number(elem.batsman_runs);
+          bowlPlayed[keys[index]][elem.batsman] += 1;
+        } else {
+          batsmanRun[keys[index]][elem.batsman] = Number(elem.batsman_runs);
+          bowlPlayed[keys[index]][elem.batsman] = 1;
+        }
       }
     })
-    index++;
-  })
-  for(let key in batsmanRun){
-    for(let keys in batsmanRun[key]){
-        batsmanRun[key][keys] = (batsmanRun[key][keys] * 100) / (bowlPlayed[key][keys])
+  });
+  
+  for (let key in batsmanRun) {
+    for (let keys in batsmanRun[key]) {
+      batsmanRun[key][keys] =
+        (batsmanRun[key][keys] * 100) / bowlPlayed[key][keys];
     }
   }
   return batsmanRun;
 }
 
+export { strikeRatePerSeason };
 
-export { strikeRatePerSeason }
+// Player dismissed by another player
 
-  // Player dismissed by another player
-
-  const dismissalPlayer = function dismissedPlayer(result) {
-      let dismissPlayer = {};
-      let player = [];
-      let maxCount = {};
-      result.map(dismiss => dismiss.player_dismissed !== "" ? maxCount[dismiss.player_dismissed] = {} : null)
-      result.map(dismiss => dismiss.player_dismissed !== "" ? dismissPlayer[dismiss.player_dismissed] = {} : null)
-      for(let key in dismissPlayer){
-        result.map(dismiss => dismiss.player_dismissed === key ? dismissPlayer[key][dismiss.bowler] ? dismissPlayer[key][dismiss.bowler] += 1 : dismissPlayer[key][dismiss.bowler] = 1 : null);
-      }
-      for(let key in dismissPlayer){
-        let arr = [];
-        for(let keys in dismissPlayer[key]){
-          arr.push(dismissPlayer[key][keys])
-        }
-        player.push(Math.max(...arr))
-      }
-      let index = 0;
-        for(let key in dismissPlayer){
-          for(let keys in dismissPlayer[key]){
-            if(dismissPlayer[key][keys] === player[index]){
-              maxCount[key][keys] = player[index];
-              break;
-            }
-          }
-          index++;
-        }
-     return maxCount
+const dismissalPlayer = function dismissedPlayer(result) {
+  let dismissPlayer = {};
+  let player = [];
+  let maxCount = {};
+  result.map((dismiss) =>
+    dismiss.player_dismissed !== ""
+      ? (maxCount[dismiss.player_dismissed] = {})
+      : null
+  );
+  result.map((dismiss) =>
+    dismiss.player_dismissed !== ""
+      ? (dismissPlayer[dismiss.player_dismissed] = {})
+      : null
+  );
+  for (let key in dismissPlayer) {
+    result.map((dismiss) =>
+      dismiss.player_dismissed === key
+        ? dismissPlayer[key][dismiss.bowler]
+          ? (dismissPlayer[key][dismiss.bowler] += 1)
+          : (dismissPlayer[key][dismiss.bowler] = 1)
+        : null
+    );
+  }
+  for (let key in dismissPlayer) {
+    let arr = [];
+    for (let keys in dismissPlayer[key]) {
+      arr.push(dismissPlayer[key][keys]);
     }
+    player.push(Math.max(...arr));
+  }
+  let index = 0;
+  for (let key in dismissPlayer) {
+    for (let keys in dismissPlayer[key]) {
+      if (dismissPlayer[key][keys] === player[index]) {
+        maxCount[key][keys] = player[index];
+        break;
+      }
+    }
+    index++;
+  }
+  return maxCount;
+};
 
-  export { dismissalPlayer }
+export { dismissalPlayer };
+
+  //  most economy player in super over
+
+  const economyPlayer = function economy(result) {
+    let totalRuns = {};
+    let totalOver = {};
+    let economyInSuperOver = {};
+     result.filter(totalRun => totalRun.is_super_over !== '0').map(runs => totalRuns[runs.bowler] ? totalRuns[runs.bowler] += Number(runs.total_runs) : totalRuns[runs.bowler] = Number(runs.total_runs))
+     result.filter(totalOver => totalOver.is_super_over !== '0').map(runs => totalOver[runs.bowler] ? totalOver[runs.bowler] += 1 : totalOver[runs.bowler] = 1)
+    
+     for(let key in totalOver){
+       totalOver[key] = totalOver[key] / 6;
+     }
+     for(let key in totalRuns){
+       totalRuns[key] = totalRuns[key] / totalOver[key]
+     }
+     let arr = [];
+     for(let key in totalRuns){
+       arr.push(totalRuns[key])
+     }
+     
+     arr.sort((a,b) => a-b)
+     arr.map(economy => {
+       for(let key in totalRuns){
+          if(totalRuns[key] === economy){
+            economyInSuperOver[key] = economy;
+          }
+       }
+     });
+     return economyInSuperOver;
+  }
+
+  export { economyPlayer }
