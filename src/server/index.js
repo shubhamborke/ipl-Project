@@ -7,6 +7,7 @@ import { topEconomicBowler } from './ipl.js';
 import { tossAndMatchWon } from './ipl.js';
 import { strikeRatePerSeason } from './ipl.js';
 import { dismissalPlayer } from './ipl.js';
+import { economyPlayer } from './ipl.js';
 import fs from 'fs';
 
 
@@ -18,6 +19,7 @@ const tossAndMachesWonPerTeam = tossAndMatchWon(matches);
 const mostMatch = mostMatchAwards(matches);
 const strikeRatePerPerson = strikeRatePerSeason(deliveries, matches);
 const highestDissmissalPlayer = dismissalPlayer(deliveries);
+const bestEconomyPlayer = economyPlayer(deliveries);
 
 
 
@@ -84,3 +86,11 @@ fs.writeFile('src/public/output/dismissalPlayer.json', JSON.stringify(highestDis
       console.log("written successful");
   }
 });
+
+fs.writeFile('src/public/output/bestEconomyPlayers.json', JSON.stringify(bestEconomyPlayer,null,2), 'utf8', (err) =>{
+    if(err){
+        console.log(err);
+    }else{
+        console.log("written successful");
+    }
+  });
