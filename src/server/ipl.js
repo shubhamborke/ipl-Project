@@ -290,6 +290,7 @@ const economyPlayer = function economy(result) {
 };
 
 module.exports = {
+  
   matchesPlayedPerYear,
   matchWonPerTeam,
   extraRunsIn2016,
