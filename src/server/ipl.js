@@ -24,22 +24,7 @@ const matchWonPerTeam = function wonPerTeam(result) {
         : (matchWon[match.winner][match.season] = 1)
       : (matchWon[match.winner] = {})
   );
-  /*  
-            code with if-else seperate
-    
-      if(matchWon[match.winner]){
-      if(matchWon[match.winner][match.season]){
-        matchWon[match.winner][match.season] += 1;
-      }else{
-        matchWon[match.winner][match.season]= 1;
-      }
-    }else{
-      matchWon[match.winner] = {}
-    }
-      
-    })
 
-    */
   /*   code with more iteration seperate
 
 
@@ -69,9 +54,6 @@ const extraRunsIn2016 = function extraRuns(matchData, deliveryData) {
             : (extraRun[teamExist.bowling_team] = Number(teamExist.extra_runs))
         );
     });
-
-  //   /*  direct id method will have biggest disadvantage
-  //     result.filter(match => match.match_id >= 577).map(bowl => extraRun[bowl.bowling_team] ? extraRun[bowl.bowling_team] += Number(bowl.extra_runs) : extraRun[bowl.bowling_team] = Number(bowl.extra_runs)) */
 
   return extraRun;
 };
@@ -124,11 +106,6 @@ const topEconomicBowler = function economicBowlers(matchData, deliveryData) {
     }
   });
 
-  /*    Avoided itrating over and over on data. program will blocked or complexity occuers
-    // result.filter(delivery => delivery.match_id >= 518 && delivery.match_id <= 576).map(runs => totalRuns[runs.bowler] ? totalRuns[runs.bowler] += +runs.wide_runs + +runs.bye_runs + +runs.legbye_runs + +runs.noball_runs + +runs.penalty_runs + +runs.batsman_runs + +runs.extra_runs: totalRuns[runs.bowler] = +runs.wide_runs + +runs.bye_runs + +runs.legbye_runs + +runs.noball_runs + +runs.penalty_runs + +runs.batsman_runs + +runs.extra_runs);
-    // result.filter(delivery => delivery.match_id >= 518 && delivery.match_id <= 576).map(overs => totalOver[overs.bowler] ? totalOver[overs.bowler] += 1 : totalOver[overs.bowler] = 1);
-    
-    */
   return economyPlayers;
 };
 
