@@ -163,13 +163,15 @@ const strikeRatePerSeason = function strikeRate(deliverydata, matchdata) {
   let copyOfBatsman = {};
   matchdata.map((season) => (batsmanRun[season.season] = {}));
   matchdata.map((season) => (bowlPlayed[season.season] = {}));
-  
-  
+
   let index = 0;
   matchdata.push({ season: 100000 });
   for (let i = 1; i < matchdata.length; i++) {
     if (matchdata[i].season !== matchdata[i - 1].season) {
-      copyOfBatsman[matchdata[i-1].season] = [matchdata[index].id, matchdata[i - 1].id];
+      copyOfBatsman[matchdata[i - 1].season] = [
+        matchdata[index].id,
+        matchdata[i - 1].id,
+      ];
       index = i;
     }
   }
@@ -178,7 +180,10 @@ const strikeRatePerSeason = function strikeRate(deliverydata, matchdata) {
   let keys = Object.keys(copyOfBatsman);
   countSeason.map((loop, index) => {
     deliverydata.map((elem) => {
-      if (elem.match_id >= Number(loop[0]) && elem.match_id <= Number(loop[1])) {
+      if (
+        elem.match_id >= Number(loop[0]) &&
+        elem.match_id <= Number(loop[1])
+      ) {
         if (batsmanRun[keys[index]][elem.batsman]) {
           batsmanRun[keys[index]][elem.batsman] += Number(elem.batsman_runs);
           bowlPlayed[keys[index]][elem.batsman] += 1;
@@ -187,9 +192,9 @@ const strikeRatePerSeason = function strikeRate(deliverydata, matchdata) {
           bowlPlayed[keys[index]][elem.batsman] = 1;
         }
       }
-    })
+    });
   });
-  
+
   for (let key in batsmanRun) {
     for (let keys in batsmanRun[key]) {
       batsmanRun[key][keys] =
@@ -197,7 +202,7 @@ const strikeRatePerSeason = function strikeRate(deliverydata, matchdata) {
     }
   }
   return batsmanRun;
-}
+};
 
 export { strikeRatePerSeason };
 
@@ -248,35 +253,47 @@ const dismissalPlayer = function dismissedPlayer(result) {
 
 export { dismissalPlayer };
 
-  //  most economy player in super over
+//  most economy player in super over
 
-  const economyPlayer = function economy(result) {
-    let totalRuns = {};
-    let totalOver = {};
-    let economyInSuperOver = {};
-     result.filter(totalRun => totalRun.is_super_over !== '0').map(runs => totalRuns[runs.bowler] ? totalRuns[runs.bowler] += Number(runs.total_runs) : totalRuns[runs.bowler] = Number(runs.total_runs))
-     result.filter(totalOver => totalOver.is_super_over !== '0').map(runs => totalOver[runs.bowler] ? totalOver[runs.bowler] += 1 : totalOver[runs.bowler] = 1)
-    
-     for(let key in totalOver){
-       totalOver[key] = totalOver[key] / 6;
-     }
-     for(let key in totalRuns){
-       totalRuns[key] = totalRuns[key] / totalOver[key]
-     }
-     let arr = [];
-     for(let key in totalRuns){
-       arr.push(totalRuns[key])
-     }
-     
-     arr.sort((a,b) => a-b)
-     arr.map(economy => {
-       for(let key in totalRuns){
-          if(totalRuns[key] === economy){
-            economyInSuperOver[key] = economy;
-          }
-       }
-     });
-     return economyInSuperOver;
+const economyPlayer = function economy(result) {
+  let totalRuns = {};
+  let totalOver = {};
+  let economyInSuperOver = {};
+  result
+    .filter((totalRun) => totalRun.is_super_over !== "0")
+    .map((runs) =>
+      totalRuns[runs.bowler]
+        ? (totalRuns[runs.bowler] += Number(runs.total_runs))
+        : (totalRuns[runs.bowler] = Number(runs.total_runs))
+    );
+  result
+    .filter((totalOver) => totalOver.is_super_over !== "0")
+    .map((runs) =>
+      totalOver[runs.bowler]
+        ? (totalOver[runs.bowler] += 1)
+        : (totalOver[runs.bowler] = 1)
+    );
+
+  for (let key in totalOver) {
+    totalOver[key] = totalOver[key] / 6;
+  }
+  for (let key in totalRuns) {
+    totalRuns[key] = totalRuns[key] / totalOver[key];
+  }
+  let arr = [];
+  for (let key in totalRuns) {
+    arr.push(totalRuns[key]);
   }
 
-  export { economyPlayer }
+  arr.sort((a, b) => a - b);
+  arr.map((economy) => {
+    for (let key in totalRuns) {
+      if (totalRuns[key] === economy) {
+        economyInSuperOver[key] = economy;
+      }
+    }
+  });
+  return economyInSuperOver;
+};
+
+export { economyPlayer };
