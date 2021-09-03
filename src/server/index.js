@@ -9,8 +9,8 @@ import fs from 'fs';
 
 const matchesPerYear = matchesPlayedPerYear(matches);
 const matchesWonByTeam = matchWonPerTeam(matches);
-const extraRun = extraRunsIn2016(deliveries);
-const top10EconomiBowler = topEconomicBowler(deliveries);
+const extraRun = extraRunsIn2016(matches, deliveries);
+const top10EconomiBowler = topEconomicBowler(matches, deliveries);
 
 
 
