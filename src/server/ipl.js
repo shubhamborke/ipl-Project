@@ -1,6 +1,4 @@
-import { deliveries } from "./deliveriesData.js";
-import { matches } from "./matchesData.js";
-// matches played per year
+// // matches played per year
 
 const matchesPlayedPerYear = function matchesPlayed(result) {
   let matchesPerYear = {};
@@ -13,73 +11,73 @@ const matchesPlayedPerYear = function matchesPlayed(result) {
   return matchesPerYear;
 };
 
-export { matchesPlayedPerYear };
-
-// matches played by team per year
+// // matches played by team per year
 
 const matchWonPerTeam = function wonPerTeam(result) {
   let matchWon = {};
-  result.map((match) => (matchWon[match.winner] = {}));
-  result.map((match) => (matchWon[match.winner][match.season] = 0));
-  result.map((match) => (matchWon[match.winner][match.season] += 1));
+  result.map((match) =>
+    matchWon[match.winner]
+      ? matchWon[match.winner][match.season]
+        ? (matchWon[match.winner][match.season] += 1)
+        : (matchWon[match.winner][match.season] = 1)
+      : (matchWon[match.winner] = {})
+  );
 
+  /*   code with more iteration seperate
+    result.map(match => matchWon[match.winner] = {});
+    result.map(match => matchWon[match.winner][match.season] = 0);
+    result.map(match => matchWon[match.winner][match.season] += 1);
+    */
   return matchWon;
 };
 
-export { matchWonPerTeam };
+// // extra runs conceded by team in 2016
 
-// extra runs conceded by team in 2016
-
-const extraRunsIn2016 = function extraRuns(result) {
+const extraRunsIn2016 = function extraRuns(matchData, deliveryData) {
   let extraRun = {};
-  result
-    .filter((matche) => matche.match_id >= 577)
-    .map((bowl) =>
-      extraRun[bowl.bowling_team]
-        ? (extraRun[bowl.bowling_team] += Number(bowl.extra_runs))
-        : (extraRun[bowl.bowling_team] = Number(bowl.extra_runs))
-    );
+
+  matchData
+    .filter((season) => season.season === "2016")
+    .map((ids) => {
+      let matchId = ids.id;
+      return deliveryData
+        .filter((compareId) => compareId.match_id === matchId)
+        .map((teamExist) =>
+          extraRun[teamExist.bowling_team]
+            ? (extraRun[teamExist.bowling_team] += Number(teamExist.extra_runs))
+            : (extraRun[teamExist.bowling_team] = Number(teamExist.extra_runs))
+        );
+    });
 
   return extraRun;
 };
 
-export { extraRunsIn2016 };
+// // // // Economical top 10 bowler
 
-// // Economical top 10 bowler
-
-const topEconomicBowler = function economicBowlers(result) {
+const topEconomicBowler = function economicBowlers(matchData, deliveryData) {
   let totalOver = {};
   let totalRuns = {};
   let economic = {};
   let economyPlayers = {};
-  result
-    .filter((delivery) => delivery.match_id >= 518 && delivery.match_id <= 576)
-    .map((runs) =>
-      totalRuns[runs.bowler]
-        ? (totalRuns[runs.bowler] +=
-            +runs.wide_runs +
-            +runs.bye_runs +
-            +runs.legbye_runs +
-            +runs.noball_runs +
-            +runs.penalty_runs +
-            +runs.batsman_runs +
-            +runs.extra_runs)
-        : (totalRuns[runs.bowler] =
-            +runs.wide_runs +
-            +runs.bye_runs +
-            +runs.legbye_runs +
-            +runs.noball_runs +
-            +runs.penalty_runs +
-            +runs.batsman_runs +
-            +runs.extra_runs)
-    );
-  result
-    .filter((delivery) => delivery.match_id >= 518 && delivery.match_id <= 576)
-    .map((overs) =>
-      totalOver[overs.bowler]
-        ? (totalOver[overs.bowler] += 1)
-        : (totalOver[overs.bowler] = 1)
-    );
+  matchData
+    .filter((season) => season.season === "2015")
+    .map((ids) => {
+      let matchId = ids.id;
+      deliveryData
+        .filter((compareId) => compareId.match_id === matchId)
+        .map((teamExist) => {
+          if (totalRuns[teamExist.bowler]) {
+            totalRuns[teamExist.bowler] += Number(teamExist.total_runs);
+          } else {
+            totalRuns[teamExist.bowler] = Number(teamExist.total_runs);
+          }
+          if (totalOver[teamExist.bowler]) {
+            totalOver[teamExist.bowler] += 1;
+          } else {
+            totalOver[teamExist.bowler] = 1;
+          }
+        });
+    });
   for (let bowler in totalOver) {
     totalOver[bowler] /= 6;
   }
@@ -99,10 +97,9 @@ const topEconomicBowler = function economicBowlers(result) {
       }
     }
   });
+
   return economyPlayers;
 };
-
-export { topEconomicBowler };
 
 // Won tosses and matches
 
@@ -118,18 +115,22 @@ const tossAndMatchWon = function tossAndMachesWinner(result) {
   return tossMatch;
 };
 
-export { tossAndMatchWon };
-
 //  Player awarded most per season
 
 const mostMatchAwards = function matchAwards(result) {
   let seasons = {};
   let mostMatch = {};
   let awardedPlay = {};
-  result.map((match) => (seasons[match.season] = {}));
-  result.map((match) => (mostMatch[match.season] = {}));
-  result.map((player) => (seasons[player.season][player.player_of_match] = 0));
-  result.map((player) => (seasons[player.season][player.player_of_match] += 1));
+  result.map((match) => {
+    seasons[match.season] = {};
+    mostMatch[match.season] = {};
+  });
+  result.map((match) => {
+    seasons[match.season][match.player_of_match] = 0;
+  });
+  result.map((match) => {
+    seasons[match.season][match.player_of_match] += 1;
+  });
   let mostAwards = [];
   for (let key in seasons) {
     let las = [];
@@ -152,8 +153,6 @@ const mostMatchAwards = function matchAwards(result) {
   return awardedPlay;
 };
 
-export { mostMatchAwards };
-
 // strike rate batsman for each season
 
 const strikeRatePerSeason = function strikeRate(deliverydata, matchdata) {
@@ -161,9 +160,10 @@ const strikeRatePerSeason = function strikeRate(deliverydata, matchdata) {
   let bowlPlayed = {};
   let strikeRate = {};
   let copyOfBatsman = {};
-  matchdata.map((season) => (batsmanRun[season.season] = {}));
-  matchdata.map((season) => (bowlPlayed[season.season] = {}));
-
+  matchdata.map((season) => {
+    batsmanRun[season.season] = {};
+    bowlPlayed[season.season] = {};
+  });
   let index = 0;
   matchdata.push({ season: 100000 });
   for (let i = 1; i < matchdata.length; i++) {
@@ -204,24 +204,19 @@ const strikeRatePerSeason = function strikeRate(deliverydata, matchdata) {
   return batsmanRun;
 };
 
-export { strikeRatePerSeason };
-
 // Player dismissed by another player
 
 const dismissalPlayer = function dismissedPlayer(result) {
   let dismissPlayer = {};
   let player = [];
   let maxCount = {};
-  result.map((dismiss) =>
-    dismiss.player_dismissed !== ""
-      ? (maxCount[dismiss.player_dismissed] = {})
-      : null
-  );
-  result.map((dismiss) =>
-    dismiss.player_dismissed !== ""
-      ? (dismissPlayer[dismiss.player_dismissed] = {})
-      : null
-  );
+  result.map((dismiss) => {
+    if (dismiss.player_dismissed !== "") {
+      maxCount[dismiss.player_dismissed] = {};
+      dismissPlayer[dismiss.player_dismissed] = {};
+    }
+  });
+
   for (let key in dismissPlayer) {
     result.map((dismiss) =>
       dismiss.player_dismissed === key
@@ -251,8 +246,6 @@ const dismissalPlayer = function dismissedPlayer(result) {
   return maxCount;
 };
 
-export { dismissalPlayer };
-
 //  most economy player in super over
 
 const economyPlayer = function economy(result) {
@@ -261,18 +254,18 @@ const economyPlayer = function economy(result) {
   let economyInSuperOver = {};
   result
     .filter((totalRun) => totalRun.is_super_over !== "0")
-    .map((runs) =>
-      totalRuns[runs.bowler]
-        ? (totalRuns[runs.bowler] += Number(runs.total_runs))
-        : (totalRuns[runs.bowler] = Number(runs.total_runs))
-    );
-  result
-    .filter((totalOver) => totalOver.is_super_over !== "0")
-    .map((runs) =>
-      totalOver[runs.bowler]
-        ? (totalOver[runs.bowler] += 1)
-        : (totalOver[runs.bowler] = 1)
-    );
+    .map((runs) => {
+      if (totalRuns[runs.bowler]) {
+        totalRuns[runs.bowler] += Number(runs.total_runs);
+      } else {
+        totalRuns[runs.bowler] = Number(runs.total_runs);
+      }
+      if (totalOver[runs.bowler]) {
+        totalOver[runs.bowler] += 1;
+      } else {
+        totalOver[runs.bowler] = 1;
+      }
+    });
 
   for (let key in totalOver) {
     totalOver[key] = totalOver[key] / 6;
@@ -296,4 +289,14 @@ const economyPlayer = function economy(result) {
   return economyInSuperOver;
 };
 
-export { economyPlayer };
+module.exports = {
+  matchesPlayedPerYear,
+  matchWonPerTeam,
+  extraRunsIn2016,
+  topEconomicBowler,
+  tossAndMatchWon,
+  mostMatchAwards,
+  strikeRatePerSeason,
+  dismissalPlayer,
+  economyPlayer,
+};

@@ -1,96 +1,40 @@
-import { matches } from './matchesData.js';
-import { deliveries } from './deliveriesData.js';
-import { matchesPlayedPerYear, mostMatchAwards } from './ipl.js';
-import { matchWonPerTeam } from './ipl.js';
-import { extraRunsIn2016 } from './ipl.js';
-import { topEconomicBowler } from './ipl.js';
-import { tossAndMatchWon } from './ipl.js';
-import { strikeRatePerSeason } from './ipl.js';
-import { dismissalPlayer } from './ipl.js';
-import { economyPlayer } from './ipl.js';
-import fs from 'fs';
+const matches = require("./matchesData.json");
+const deliveries = require("./deliveriesData.json");
+const functions = require("./ipl");
 
+const fs = require("fs");
 
-const matchesPerYear = matchesPlayedPerYear(matches);
-const matchesWonByTeam = matchWonPerTeam(matches);
-const extraRun = extraRunsIn2016(deliveries);
-const top10EconomiBowler = topEconomicBowler(deliveries);
-const tossAndMachesWonPerTeam = tossAndMatchWon(matches);
-const mostMatch = mostMatchAwards(matches);
-const strikeRatePerPerson = strikeRatePerSeason(deliveries, matches);
-const highestDissmissalPlayer = dismissalPlayer(deliveries);
-const bestEconomyPlayer = economyPlayer(deliveries);
+const matchesPerYear = functions.matchesPlayedPerYear(matches);
+const matchesWonByTeam = functions.matchWonPerTeam(matches);
+const extraRun = functions.extraRunsIn2016(matches, deliveries);
+const top10EconomiBowler = functions.topEconomicBowler(matches, deliveries);
+const tossAndMachesWonPerTeam = functions.tossAndMatchWon(matches);
+const mostMatch = functions.mostMatchAwards(matches);
+const strikeRatePerPerson = functions.strikeRatePerSeason(deliveries, matches);
+const highestDissmissalPlayer = functions.dismissalPlayer(deliveries);
+const bestEconomyPlayer = functions.economyPlayer(deliveries);
 
-
-
-fs.writeFile('src/public/output/matchesPerYear.json', JSON.stringify(matchesPerYear,null,2), 'utf8', (err) =>{
-    if(err){
+function writeOverjson(file, fileName) {
+  fs.writeFile(
+    `src/public/output/${fileName}.json`,
+    JSON.stringify(file, null, 2),
+    "utf8",
+    (err) => {
+      if (err) {
         console.log(err);
-    }else{
+      } else {
         console.log("written successful");
+      }
     }
-});
+  );
+}
 
-fs.writeFile('src/public/output/matchesWonPerYear.json', JSON.stringify(matchesWonByTeam,null,2), 'utf8', (err) =>{
-    if(err){
-        console.log(err);
-    }else{
-        console.log("written successful");
-    }
-});
-
-fs.writeFile('src/public/output/extraRunIn2016.json', JSON.stringify(extraRun,null,2), 'utf8', (err) =>{
-    if(err){
-        console.log(err);
-    }else{
-        console.log("written successful");
-    }
-});
-
-fs.writeFile('src/public/output/top10EconomiBowler.json', JSON.stringify(top10EconomiBowler,null,2), 'utf8', (err) =>{
-    if(err){
-        console.log(err);
-    }else{
-        console.log("written successful");
-    }
-});
-
-fs.writeFile('src/public/output/tossAndMachesWinner.json', JSON.stringify(tossAndMachesWonPerTeam,null,2), 'utf8', (err) =>{
-  if(err){
-      console.log(err);
-  }else{
-      console.log("written successful");
-  }
-});
-
-fs.writeFile('src/public/output/mostMatchAward.json', JSON.stringify(mostMatch,null,2), 'utf8', (err) =>{
-  if(err){
-      console.log(err);
-  }else{
-      console.log("written successful");
-  }
-});
-
-fs.writeFile('src/public/output/strikeRatePerSeason.json', JSON.stringify(strikeRatePerPerson,null,2), 'utf8', (err) =>{
-  if(err){
-      console.log(err);
-  }else{
-      console.log("written successful");
-  }
-});
-
-fs.writeFile('src/public/output/dismissalPlayer.json', JSON.stringify(highestDissmissalPlayer,null,2), 'utf8', (err) =>{
-  if(err){
-      console.log(err);
-  }else{
-      console.log("written successful");
-  }
-});
-
-fs.writeFile('src/public/output/bestEconomyPlayers.json', JSON.stringify(bestEconomyPlayer,null,2), 'utf8', (err) =>{
-    if(err){
-        console.log(err);
-    }else{
-        console.log("written successful");
-    }
-  });
+writeOverjson(matchesPerYear, "matchesPerYear");
+writeOverjson(matchesWonByTeam, "matchesWonPerYear");
+writeOverjson(extraRun, "extraRunIn2016");
+writeOverjson(top10EconomiBowler, "top10EconomiBowler");
+writeOverjson(tossAndMachesWonPerTeam, "tossAndMachesWinner");
+writeOverjson(mostMatch, "mostMatchAward");
+writeOverjson(strikeRatePerPerson, "strikeRatePerSeason");
+writeOverjson(highestDissmissalPlayer, "dismissalPlayer");
+writeOverjson(bestEconomyPlayer, "bestEconomyPlayers");
