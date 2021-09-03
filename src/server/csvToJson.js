@@ -1,19 +1,19 @@
 
-import fs from 'fs';
-import csv from 'csvtojson';
-
+const fs = require('fs')
+const csv = require('csvtojson')
+const path = require('path')
 
 
 const deliveriesPath = 'src/data/deliveries.csv';
 const matchesPath = 'src/data/matches.csv';
     
 function csvToJsonFile(jsonFilePath, fileName){
-
+let absPath = path.join(__dirname, `/${fileName}.json`)
     csv()
 .fromFile(jsonFilePath)
 .then((jsonObj)=>{
     
-fs.writeFile(`/home/shubham/hello/vscodes/IPL-Project/src/server/${fileName}.js`, JSON.stringify(jsonObj), (err, data) => err ? console.log(err) : console.log("written successeful"))
+fs.writeFile(absPath, JSON.stringify(jsonObj), (err, data) => err ? console.log(err) : console.log("written successeful"))
     
 })
 }
