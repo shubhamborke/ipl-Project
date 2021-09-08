@@ -1,39 +1,38 @@
-// // matches played per year
-const matches = require("./matchesData.json")
-const matchesPlayedPerYear = function matchesPlayed(result) {
-  
-  const accumlator = result.reduce((accumlator, matchSeason) => {
-    if(accumlator[matchSeason.season]){
-      accumlator[matchSeason.season] += 1;
-    }else{
-      accumlator[matchSeason.season] = 1;
-    }
+// // // matches played per year
+// const matchesPlayedPerYear = function matchesPlayed(result) {
 
-return accumlator
-  }, {})
-   return accumlator
-};
+//   const accumlator = result.reduce((accumlator, matchSeason) => {
+//     if(accumlator[matchSeason.season]){
+//       accumlator[matchSeason.season] += 1;
+//     }else{
+//       accumlator[matchSeason.season] = 1;
+//     }
 
-// // // matches played by team per year
-
-// const matchWonPerTeam = function wonPerTeam(result) {
-//   let matchWon = {};
-//   result.map((match) =>
-//     matchWon[match.winner]
-//       ? matchWon[match.winner][match.season]
-//         ? (matchWon[match.winner][match.season] += 1)
-//         : (matchWon[match.winner][match.season] = 1)
-//       : (matchWon[match.winner] = {})
-//   );
-
-//   /*   code with more iteration seperate
-//     result.map(match => matchWon[match.winner] = {});
-//     result.map(match => matchWon[match.winner][match.season] = 0);
-//     result.map(match => matchWon[match.winner][match.season] += 1);
-//     */
-//   return matchWon;
+// return accumlator
+//   }, {})
+//    return accumlator
 // };
 
+// // matches played by team per year
+const matches = require("./matchesData.json");
+const matchWonPerTeam = function wonPerTeam(result) {
+  let matchWon = {};
+  const winningTeams = result.reduce((winningTeams, match) => {
+    if (winningTeams[match.winner]) {
+      if (winningTeams[match.winner][match.season]) {
+        winningTeams[match.winner][match.season] += 1;
+      } else {
+        winningTeams[match.winner][match.season] = 1;
+      }
+    } else {
+      winningTeams[match.winner] = {};
+    }
+    return winningTeams;
+  }, {});
+
+  return winningTeams;
+};
+matchWonPerTeam(matches);
 // // // extra runs conceded by team in 2016
 
 // const extraRunsIn2016 = function extraRuns(matchData, deliveryData) {
@@ -293,7 +292,7 @@ return accumlator
 // };
 
 // module.exports = {
-  
+
 //   matchesPlayedPerYear,
 //   matchWonPerTeam,
 //   extraRunsIn2016,
