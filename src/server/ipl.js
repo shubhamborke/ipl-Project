@@ -16,7 +16,7 @@ const matchesPlayedPerYear = function matchesPlayed(result) {
 const matchWonPerTeam = function wonPerTeam(result) {
   let matchWon = {};
   const winningTeams = result.reduce((winningTeams, match) => {
-    if (winningTeams[match.winner]) {
+    if (winningTeams[match.winner] && winningTeams[match.winner] !== "") {
       if (winningTeams[match.winner][match.season]) {
         winningTeams[match.winner][match.season] += 1;
       } else {
@@ -264,7 +264,7 @@ const dismissalPlayer = function dismissedPlayer(result) {
 //  most economy player in super over
 
 const economyPlayer = function economy(result) {
-  let totalOver = {};
+  // let totalOver = {};
   let economyInSuperOver = {};
   const totalRuns = result
     .filter((totalRun) => totalRun.is_super_over !== "0")
