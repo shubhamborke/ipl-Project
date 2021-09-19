@@ -127,7 +127,7 @@ const server = http.createServer((req, res) => {
     }
 })
 
-server.listen(8000, (err) => {
+server.listen(process.env || 8000, (err) => {
     if(err){
         console.log(err)
     }else{
