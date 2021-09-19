@@ -6,14 +6,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "csvjson": "node src/server/index.js",
-    "start": "nodemon src/public/server.js",
-    "heroku-postbuild": "npm run build"
+    "start": "node src/public/server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "babel-install": "^2.1.0",
-    "csvtojson": "^2.0.10",
-    "node-fetch": "^3.0.0"
+    "csvtojson": "^2.0.10"
   }
 }
