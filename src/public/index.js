@@ -1,7 +1,33 @@
+
 function MatchesPlayedPerYear() {
-  fetch("./output/matchesPerYear.json")
-    .then((resolve) => resolve.json())
+  // fetch("http://localhost:8000/matchesPerYear")
+  //   .then((resolve) => resolve.json())
+  //   .then((data) => {
+  //     console.log(data)
+
+  fetch("http://localhost:8000/matchesPerYear")
+    .then((response) => {
+      return response.json();
+    })
     .then((data) => {
+      console.log(data);
+
+      /*
+// const url = "http://localhost:8000/matchesPerYear";
+// http.get(url, res => {
+//   let data = '';
+//   res.on('data', chunk => {
+//     data += chunk;
+//   });
+//   res.on('end', () => {
+//     data = JSON.parse(data);
+//     console.log(data);
+//   })
+// }).on('error', err => {
+//   console.log(err.message);
+// })
+
+*/
       let keys = [];
       let values = [];
       for (let key in data) {
@@ -27,9 +53,10 @@ function MatchesPlayedPerYear() {
       });
     });
 }
+MatchesPlayedPerYear();
 
 function bestEconomyPlayers() {
-  fetch("./output/bestEconomyPlayers.json")
+  fetch("http://localhost:8000/bestEconomyPlayers")
     .then((resolve) => resolve.json())
     .then((data) => {
       let keys = [];
@@ -60,7 +87,7 @@ function bestEconomyPlayers() {
 }
 
 function extraRunIn2016() {
-    fetch("./output/extraRunIn2016.json")
+    fetch("http://localhost:8000/extraRunIn2016")
       .then((resolve) => resolve.json())
       .then((data) => {
         let keys = [];
@@ -69,7 +96,7 @@ function extraRunIn2016() {
           keys.push(key);
           values.push(data[key]);
         }
-  
+
         Highcharts.chart("extraRunsIn2016", {
           chart: {
             type: "column",
@@ -91,7 +118,7 @@ function extraRunIn2016() {
   }
 
   function mostMatchesAwards() {
-    fetch("./output/mostMatchAward.json")
+    fetch("http://localhost:8000/mostMatchAward")
       .then((resolve) => resolve.json())
       .then((data) => {
         let names = []
@@ -100,7 +127,7 @@ function extraRunIn2016() {
           names.push(data[key])
           values.push([data[key]+" " + key, Number(key)]);
         }
-  
+
         Highcharts.chart("mostMatchAwards", {
           chart: {
             type: 'pie'
@@ -122,7 +149,7 @@ function extraRunIn2016() {
   }
 
   function top10EconomicBowler() {
-    fetch("./output/top10EconomiBowler.json")
+    fetch("http://localhost:8000/top10EconomiBowler")
       .then((resolve) => resolve.json())
       .then((data) => {
         let keys = [];
@@ -131,7 +158,7 @@ function extraRunIn2016() {
           keys.push(key);
           values.push(data[key]);
         }
-  
+
         Highcharts.chart("top10EconomicBowler", {
           chart: {
             type: 'column'
@@ -153,7 +180,7 @@ function extraRunIn2016() {
   }
 
   function tossAndMatchWinner() {
-    fetch("./output/tossAndMachesWinner.json")
+    fetch("http://localhost:8000/tossAndMachesWinner")
       .then((resolve) => resolve.json())
       .then((data) => {
         let keys = [];
@@ -162,7 +189,7 @@ function extraRunIn2016() {
           keys.push(key);
           values.push(data[key]);
         }
-  
+
         Highcharts.chart("tossAndMachesWinner", {
           chart: {
             type: 'column'
@@ -184,7 +211,7 @@ function extraRunIn2016() {
   }
 
   function dismissalPlayer() {
-    fetch("./output/dismissalPlayer.json")
+    fetch("http://localhost:8000/dismissalPlayer")
       .then((resolve) => resolve.json())
       .then((data) => {
         let values = [];
@@ -193,7 +220,7 @@ function extraRunIn2016() {
             values.push([`${key} ${valKey} ${data[key][valKey]}`, data[key][valKey]])
           }
         }
-  
+
         Highcharts.chart("dismissalPlayer", {
           chart: {
             type: 'pie'
@@ -212,7 +239,7 @@ function extraRunIn2016() {
   }
 
   function matchesWonPerYear() {
-    fetch("./output/matchesWonPerYear.json")
+    fetch("http://localhost:8000/matchesWonPerYear")
       .then((resolve) => resolve.json())
       .then((data) => {
         let keys = [];
@@ -229,8 +256,7 @@ function extraRunIn2016() {
           }
           values.push([key, indexval])
       }
-      seasons = seasons.sort((a,b) => a-b)
-  
+
         Highcharts.chart("matchesWonPerYear", {
           chart: {
             type: "column",
@@ -315,22 +341,22 @@ tossAndMatchWinner();
 dismissalPlayer();
 matchesWonPerYear();
 
-// MatchesPlayedPerYear();
+// // MatchesPlayedPerYear();
 
-// document.addEventListener("DOMContentLoaded", () => {
-//   Highcharts.chart("container", {
-//     xAxis: {
-//       categories: ["Apple", "Bannana", "Orange"],
-//     },
-//     series: [
-//       {
-//         name: "john",
-//         data: [1, 2, 3],
-//       },
-//       {
-//         name: "Ro",
-//         data: [2, 4, 8],
-//       },
-//     ],
-//   });
-// });
+// // document.addEventListener("DOMContentLoaded", () => {
+// //   Highcharts.chart("container", {
+// //     xAxis: {
+// //       categories: ["Apple", "Bannana", "Orange"],
+// //     },
+// //     series: [
+// //       {
+// //         name: "john",
+// //         data: [1, 2, 3],
+// //       },
+// //       {
+// //         name: "Ro",
+// //         data: [2, 4, 8],
+// //       },
+// //     ],
+// //   });
+// // });
