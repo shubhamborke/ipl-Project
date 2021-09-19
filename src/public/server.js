@@ -1,17 +1,14 @@
 const http = require("http")
 const fs = require("fs")
-const path = require("path")
 
-const matchesPerYear = path.join(__dirname, "/output/matchesPerYear.json")
-const bestEconomyPlayers = path.join(__dirname, "./output/bestEconomyPlayers.json")
-const extraRunIn2016 = path.join(__dirname, "/output/extraRunIn2016.json")
-const mostMatchAward = path.join(__dirname, "/output/mostMatchAward.json")
-const top10EconomiBowler = path.join(__dirname, "/output/top10EconomiBowler.json")
-const tossAndMachesWinner = path.join(__dirname, "/output/tossAndMachesWinner.json")
-const dismissalPlayer = path.join(__dirname, "/output/dismissalPlayer.json")
-const matchesWonPerYear = path.join(__dirname, "/output/matchesWonPerYear.json")
-const serverPath = path.join(__dirname, "/index.js")
-const htmlPath = path.join(__dirname, "/index.html")
+const matchesPerYear = "/output/matchesPerYear.json"
+const bestEconomyPlayers = "./output/bestEconomyPlayers.json"
+const extraRunIn2016 = "/output/extraRunIn2016.json"
+const mostMatchAward = "/output/mostMatchAward.json"
+const top10EconomiBowler = "/output/top10EconomiBowler.json"
+const tossAndMachesWinner = "/output/tossAndMachesWinner.json"
+const dismissalPlayer = "/output/dismissalPlayer.json"
+const matchesWonPerYear = "/output/matchesWonPerYear.json"
 
 const server = http.createServer((req, res) => {
     switch(req.url){
@@ -104,7 +101,7 @@ const server = http.createServer((req, res) => {
                             })
                             break;
                             case "/js":
-                                fs.readFile(serverPath, "utf-8", (err,data) => {
+                                fs.readFile("/index.js", "utf-8", (err,data) => {
                                     if(err){
                                         res.writeHead(404, {"content-type": "application/json"})
                               res.end("File not found");
@@ -115,7 +112,7 @@ const server = http.createServer((req, res) => {
                                 })
                                 break;
                                 case "/html":
-                                fs.readFile(htmlPath, "utf-8", (err,data) => {
+                                fs.readFile("/index.html", "utf-8", (err,data) => {
                                     if(err){
                                         res.writeHead(404, {"content-type": "application/json"})
                               res.end("File not found");
