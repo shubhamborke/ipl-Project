@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "csvjson": "node src/server/index.js",
-    "start": "nodemon src/public/server.js"
+    "start": "nodemon src/public/server.js",
+    "heroku-postbuild": "npm run build"
   },
   "author": "",
   "license": "ISC",
