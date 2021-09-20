@@ -12,7 +12,6 @@
   "license": "ISC",
   "dependencies": {
     "babel-install": "^2.1.0",
-    "csvtojson": "^2.0.10",
-    "nodemon": "^2.0.12"
+    "csvtojson": "^2.0.10"
   }
 }

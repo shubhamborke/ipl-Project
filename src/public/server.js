@@ -1,14 +1,14 @@
 const http = require("http")
 const fs = require("fs")
 
-const matchesPerYear = "/output/matchesPerYear.json"
-const bestEconomyPlayers = "./output/bestEconomyPlayers.json"
-const extraRunIn2016 = "/output/extraRunIn2016.json"
-const mostMatchAward = "/output/mostMatchAward.json"
-const top10EconomiBowler = "/output/top10EconomiBowler.json"
-const tossAndMachesWinner = "/output/tossAndMachesWinner.json"
-const dismissalPlayer = "/output/dismissalPlayer.json"
-const matchesWonPerYear = "/output/matchesWonPerYear.json"
+const matchesPerYear = "src/public/output/matchesPerYear.json"
+const bestEconomyPlayers = "src/public/output/bestEconomyPlayers.json"
+const extraRunIn2016 = "src/public/output/extraRunIn2016.json"
+const mostMatchAward = "src/public/output/mostMatchAward.json"
+const top10EconomiBowler = "src/public/output/top10EconomiBowler.json"
+const tossAndMachesWinner = "src/public/output/tossAndMachesWinner.json"
+const dismissalPlayer = "src/public/output/dismissalPlayer.json"
+const matchesWonPerYear = "src/public/output/matchesWonPerYear.json"
 
 const server = http.createServer((req, res) => {
     switch(req.url){
@@ -101,7 +101,7 @@ const server = http.createServer((req, res) => {
                             })
                             break;
                             case "/js":
-                                fs.readFile("/index.js", "utf-8", (err,data) => {
+                                fs.readFile("src/public/index.js", "utf-8", (err,data) => {
                                     if(err){
                                         res.writeHead(404, {"content-type": "application/json"})
                               res.end("File not found");
@@ -112,7 +112,7 @@ const server = http.createServer((req, res) => {
                                 })
                                 break;
                                 case "/html":
-                                fs.readFile("/index.html", "utf-8", (err,data) => {
+                                fs.readFile("src/public/index.html", "utf-8", (err,data) => {
                                     if(err){
                                         res.writeHead(404, {"content-type": "application/json"})
                               res.end("File not found");
@@ -127,7 +127,7 @@ const server = http.createServer((req, res) => {
     }
 })
 
-server.listen(process.env || 8000, (err) => {
+server.listen(8000, (err) => {
     if(err){
         console.log(err)
     }else{
